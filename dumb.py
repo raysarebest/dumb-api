@@ -10,4 +10,9 @@ def index():
 def normal(count):
     return "dumb" * count
 
+@app.route("/<count>")
+def special(count):
+    count = int(count)
+    return "dumb"[::int(abs(count) / count)] * abs(count)
+
 app.run(debug=True)
