@@ -65,4 +65,5 @@ def slice_direction(value):
     positive = abs(value)
     return int(positive / value)
 
-app.run(debug=True)
+if __name__ == "__main__":
+    app.run()
