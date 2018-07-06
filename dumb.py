@@ -1,23 +1,34 @@
 from flask import Flask
+from flask import Response
 import functools
+
+def plaintext_response(func):
+    @functools.wraps(func)
+    def decorated(*args, **kwargs):
+        return Response(func(*args, **kwargs), mimetype="text/plain")
+    return decorated
 
 app = Flask(__name__)
 
 phrase = "dumb"
 
 @app.route("/")
+@plaintext_response
 def index():
     return "You gotta tell me how dumb you want it"
 
 @app.route("/<int:count>")
+@plaintext_response
 def integer(count):
     return phrase * count
 
 @app.route("/<float:count>")
+@plaintext_response
 def decimal(count):
     return (phrase * int(count)) + partial_from_float(count)
 
-@app.route("/<count>")
+@app.route("/<path:count>")
+@plaintext_response
 def special(count):
     try:
         count = float(count)
